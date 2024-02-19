@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         String keyword = getKeyword();
-        WebScraper wikipediaScraper = new WebScraper(Website.WIKIPEDIA.getSearchUrl(keyword), Website.WIKIPEDIA.getSearchResultSection());
-        wikipediaScraper.start();
+        WebScraper scraper = new WebScraper(Website.GOOGLE_IMAGES.getSearchUrl(keyword), Website.GOOGLE_IMAGES.getSearchResultSection());
+        scraper.start();
     }
     private static String getKeyword(){
         Scanner inputReader = new Scanner(System.in);

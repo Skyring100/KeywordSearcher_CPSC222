@@ -20,12 +20,14 @@ public class WebScraper extends Thread{
     public void run() {
         Document document = null;
         try {
+            System.out.println("Going to "+url);
             document = Jsoup.connect(url).get();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         Elements selections = document.select(tag);
+        System.out.println(selections.size());
         for(Element ele : selections){
             System.out.println(ele.html());
         }
