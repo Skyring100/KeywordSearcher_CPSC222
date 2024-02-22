@@ -7,19 +7,17 @@ import websites.Website;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class WebScraper extends Thread{
-    private String url;
-    private Website website;
+    private final String url;
+    private final Website website;
     public WebScraper(Website w, String keyword){
         website = w;
         url = w.getSearchUrl(keyword);
-
     }
     @Override
     public void run() {
-        Document document = null;
+        Document document;
         try {
             System.out.println("Going to "+url);
             document = Jsoup.connect(url).get();
@@ -41,8 +39,15 @@ public class WebScraper extends Thread{
         //get the links from those search result elements
         for (Element ele : resultElements) {
             String resultLink = website.getResultUrl(ele);
-            System.out.println(resultLink);
+            String resultHTML;
+            try {
+                resultHTML = Jsoup.connect(resultLink).get().html();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             //later on, will use new threads to get data
+            String usefulData = website.findResultData(resultHTML);
+            System.out.println(resultLink+"\n"+usefulData);
         }
 
 
