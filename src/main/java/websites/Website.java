@@ -1,6 +1,8 @@
 package websites;
 
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public abstract class Website {
     private String url1;
@@ -14,9 +16,13 @@ public abstract class Website {
     public String getSearchUrl(String keyword){
         return url1 + keyword + url2;
     }
-    public String getSearchResultElement(){
+    protected String getSearchResultElement(){
         return searchResultElement;
     }
-    public abstract String getResultUrl(Element htmlElement);
-    public abstract String findResultData(String htmlPage);
+    public abstract Elements getSearchResultsFromPage(Document resultPage);
+    public abstract String getSearchResultUrl(Element htmlElement);
+    public abstract String findUsefulData(Document webpage);
+    public String getTextOnly(String html){
+        return html.replaceAll("<.*?>","");
+    }
 }

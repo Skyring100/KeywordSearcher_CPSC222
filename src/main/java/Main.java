@@ -6,8 +6,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         String keyword = getKeyword();
-        //WebScraper wikiHowScraper = new WebScraper(WebsiteEnum.WIKIHOW.getSearchUrl(keyword), WebsiteEnum.WIKIHOW.getSearchResultElement());
-        WebScraper wikiHowScraper = new WebScraper(new WikiHow(), keyword);
+        WebScraper wikiHowScraper = new WebScraper(new WikiHow(), keyword, 3);
         wikiHowScraper.start();
     }
     private static String getKeyword(){

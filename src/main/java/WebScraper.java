@@ -3,60 +3,49 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import websites.Website;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class WebScraper extends Thread{
     private final String url;
     private final Website website;
-    public WebScraper(Website w, String keyword){
+    private final int maxResults;
+    public WebScraper(Website w, String keyword, int maxResults){
         website = w;
         url = w.getSearchUrl(keyword);
+        this.maxResults = maxResults;
+    }
+    public WebScraper(Website w, String keyword){
+        this(w,keyword,15);
     }
     @Override
     public void run() {
-        Document document;
+        //connect to the search result page
+        Document searchResultPage;
         try {
             System.out.println("Going to "+url);
-            document = Jsoup.connect(url).get();
+            searchResultPage = Jsoup.connect(url).get();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //FOR DEBUG
-        try {
-            writeDebugFile(document.html());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        //getting all element that contain valuable search result links
-        Elements resultElements = document.select(website.getSearchResultElement());
+        //getting all elements that contain valuable search result links
+        Elements resultElements = website.getSearchResultsFromPage(searchResultPage);
         if(resultElements.size() == 0){
             System.out.println("No results found");
             return;
         }
         //get the links from those search result elements
-        for (Element ele : resultElements) {
-            String resultLink = website.getResultUrl(ele);
-            String resultHTML;
+        for (int i = 0; i < maxResults; i++) {
+            Element ele = resultElements.get(i);
+            String resultLink = website.getSearchResultUrl(ele);
+            Document resultDocument;
             try {
-                resultHTML = Jsoup.connect(resultLink).get().html();
+                resultDocument = Jsoup.connect(resultLink).get();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             //later on, will use new threads to get data
-            String usefulData = website.findResultData(resultHTML);
+            String usefulData = website.findUsefulData(resultDocument);
             System.out.println(resultLink+"\n"+usefulData);
         }
-
-
-
-    }
-    private void writeDebugFile(String html) throws IOException {
-        File htmlFile = new File("result_pages/"+website.getSearchResultElement() +".html");
-        FileWriter writer = new FileWriter(htmlFile);
-        writer.write(html);
-        writer.close();
     }
 }
