@@ -19,10 +19,16 @@ public abstract class Website {
     protected String getSearchResultElement(){
         return searchResultElement;
     }
-    public abstract Elements getSearchResultsFromPage(Document resultPage);
-    public abstract String getSearchResultUrl(Element htmlElement);
+    public abstract Elements getSearchResultElements(Document resultPage);
+    public abstract String getResultUrl(Element htmlElement);
     public abstract String findUsefulData(Document webpage);
-    public String getTextOnly(String html){
+
+    /**
+     * Removes all HTML tags from given HTML code, leaving only the text directly on the website
+     * @param html the HTML code in String format
+     * @return the text without any HTML code
+     */
+    public String removeHTMLTags(String html){
         return html.replaceAll("<.*?>","");
     }
 }

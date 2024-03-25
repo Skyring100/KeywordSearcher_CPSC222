@@ -28,15 +28,15 @@ public class WebScraper extends Thread{
             throw new RuntimeException(e);
         }
         //getting all elements that contain valuable search result links
-        Elements resultElements = website.getSearchResultsFromPage(searchResultPage);
+        Elements resultElements = website.getSearchResultElements(searchResultPage);
         if(resultElements.size() == 0){
             System.out.println("No results found");
             return;
         }
         //get the links from those search result elements
-        for (int i = 0; i < maxResults; i++) {
+        for (int i = 0; i < Math.min(maxResults, resultElements.size()); i++) {
             Element ele = resultElements.get(i);
-            String resultLink = website.getSearchResultUrl(ele);
+            String resultLink = website.getResultUrl(ele);
             Document resultDocument;
             try {
                 resultDocument = Jsoup.connect(resultLink).get();
