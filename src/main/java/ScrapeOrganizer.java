@@ -12,11 +12,11 @@ public class ScrapeOrganizer extends Thread{
     private BlockingQueue<MinedInfo> dataQueue;
     private final WebScraper[] scrapers;
     FileWriter htmlWriter;
-    public ScrapeOrganizer(String keyword, Website[] websites){
+    public ScrapeOrganizer(String keyword, Website[] websites, int maxResults){
         dataQueue = new LinkedBlockingQueue<>();
         scrapers = new WebScraper[websites.length];
         for(int i = 0; i < websites.length; i++){
-            scrapers[i] = new WebScraper(websites[i], keyword, dataQueue);
+            scrapers[i] = new WebScraper(websites[i], keyword, dataQueue, maxResults);
         }
         try {
             htmlWriter = new FileWriter(keyword + ".html");
@@ -24,7 +24,9 @@ public class ScrapeOrganizer extends Thread{
             throw new RuntimeException();
         }
     }
-
+    public ScrapeOrganizer(String keyword, Website[] websites){
+        this(keyword, websites, 4);
+    }
     @Override
     public void run() {
         for(WebScraper scraper : scrapers){

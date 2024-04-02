@@ -18,7 +18,7 @@ public class WebScraper extends Thread{
         this.maxResults = maxResults;
     }
     public WebScraper(Website w, String keyword, BlockingQueue<MinedInfo> d){
-        this(w,keyword,d,15);
+        this(w,keyword,d,5);
     }
     @Override
     public void run() {
