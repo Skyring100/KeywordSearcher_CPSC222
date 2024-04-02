@@ -6,7 +6,7 @@ import org.jsoup.select.Elements;
 
 public class WikiHow extends Website{
     public WikiHow(){
-        super("https://www.wikihow.com/wikiHowTo?search=", "&Search=", "a.result_link");
+        super("WikiHow","https://www.wikihow.com/wikiHowTo?search=", "&Search=", "a.result_link");
     }
 
 

@@ -4,18 +4,21 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import websites.Website;
 import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
 
 public class WebScraper extends Thread{
     private final String url;
     private final Website website;
     private final int maxResults;
-    public WebScraper(Website w, String keyword, int maxResults){
+    private BlockingQueue<MinedInfo> dataQueue;
+    public WebScraper(Website w, String keyword, BlockingQueue<MinedInfo> d, int maxResults){
         website = w;
         url = w.getSearchUrl(keyword);
+        dataQueue = d;
         this.maxResults = maxResults;
     }
-    public WebScraper(Website w, String keyword){
-        this(w,keyword,15);
+    public WebScraper(Website w, String keyword, BlockingQueue<MinedInfo> d){
+        this(w,keyword,d,15);
     }
     @Override
     public void run() {
@@ -33,19 +36,35 @@ public class WebScraper extends Thread{
             System.out.println("No results found");
             return;
         }
+
         //get the links from those search result elements
         for (int i = 0; i < Math.min(maxResults, resultElements.size()); i++) {
             Element ele = resultElements.get(i);
             String resultLink = website.getResultUrl(ele);
+            //extract the data from the resulting url
+            DataExtractor extractor = new DataExtractor(resultLink);
+            extractor.start();
+        }
+    }
+    private class DataExtractor extends Thread {
+        private final String dataURL;
+        DataExtractor(String url){
+            this.dataURL = url;
+        }
+        @Override
+        public void run() {
             Document resultDocument;
             try {
-                resultDocument = Jsoup.connect(resultLink).get();
+                resultDocument = Jsoup.connect(dataURL).get();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            //later on, will use new threads to get data
+
             String usefulData = website.findUsefulData(resultDocument);
-            System.out.println(resultLink+"\n"+usefulData);
+
+            System.out.println(dataURL+"\n"+usefulData);
+
+            dataQueue.add(new MinedInfo(website.getName(), dataURL, usefulData));
         }
     }
 }

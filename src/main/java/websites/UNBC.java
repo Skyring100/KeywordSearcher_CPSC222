@@ -6,7 +6,7 @@ import org.jsoup.select.Elements;
 
 public class UNBC extends Website{
     public UNBC() {
-        super("https://www2.unbc.ca/search/","","li.search-result");
+        super("UNBC","https://www2.unbc.ca/search/","","li.search-result");
     }
 
     @Override

@@ -5,13 +5,18 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public abstract class Website {
+    private final String name;
     private String url1;
     private String url2;
     private String searchResultElement;
-    public Website(String url1, String url2, String searchResultElement){
+    public Website(String name,String url1, String url2, String searchResultElement){
+        this.name = name;
         this.url1 = url1;
         this.url2 = url2;
         this.searchResultElement = searchResultElement;
+    }
+    public String getName() {
+        return name;
     }
     public String getSearchUrl(String keyword){
         return url1 + keyword + url2;

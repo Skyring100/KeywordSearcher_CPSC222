@@ -1,5 +1,5 @@
 import websites.UNBC;
-import websites.WebsiteEnum;
+import websites.Website;
 import websites.WikiHow;
 
 import java.util.Scanner;
@@ -7,10 +7,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         String keyword = getKeyword();
-        WebScraper wikiHowScraper = new WebScraper(new WikiHow(), keyword, 3);
-        WebScraper unbcScrapper = new WebScraper(new UNBC(), keyword, 3);
-        //wikiHowScraper.start();
-        unbcScrapper.start();
+        ScrapeOrganizer organizer = new ScrapeOrganizer(keyword, new Website[]{new WikiHow(), new UNBC()});
+        organizer.start();
     }
     private static String getKeyword(){
         Scanner inputReader = new Scanner(System.in);
