@@ -1,7 +1,10 @@
 import websites.Website;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -11,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ScrapeOrganizer extends Thread{
     private BlockingQueue<MinedInfo> dataQueue;
     private final WebScraper[] scrapers;
-    FileWriter htmlWriter;
+    private FileWriter htmlWriter;
     public ScrapeOrganizer(String keyword, Website[] websites, int maxResults){
         dataQueue = new LinkedBlockingQueue<>();
         scrapers = new WebScraper[websites.length];
@@ -19,7 +22,9 @@ public class ScrapeOrganizer extends Thread{
             scrapers[i] = new WebScraper(websites[i], keyword, dataQueue, maxResults);
         }
         try {
-            htmlWriter = new FileWriter(keyword + ".html");
+            htmlWriter = new FileWriter("created_webpages/"+keyword + ".html");
+            //duplicate the "html_baseplate/basePlate.html" file
+
         }catch (IOException e){
             throw new RuntimeException();
         }
