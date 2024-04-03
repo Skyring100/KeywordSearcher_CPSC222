@@ -28,11 +28,12 @@ public class WebScraper extends Thread{
             System.out.println("Going to "+url);
             searchResultPage = Jsoup.connect(url).get();
         } catch (IOException e) {
+            System.out.println("Failed to reach "+url);
             throw new RuntimeException(e);
         }
         //getting all elements that contain valuable search result links
         Elements resultElements = website.getSearchResultElements(searchResultPage);
-        if(resultElements.size() == 0){
+        if(resultElements.isEmpty()){
             System.out.println("No results found");
             return;
         }

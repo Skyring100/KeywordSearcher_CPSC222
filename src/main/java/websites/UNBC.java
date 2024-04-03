@@ -24,6 +24,10 @@ public class UNBC extends Website{
         String data = webpage.title()+"\n";
         //main "article" section on each webpage has the content of the webpage
         Element article = webpage.select("article").first();
+        //check if the article section is null
+        if(article == null){
+            throw new RuntimeException("No article element for "+webpage.title());
+        }
         //UNBC lacks webpage structure, so guess which element is the main content based on text length
         //main content generally is in p and span tags. It can also be in div tags, but these are broadly used as larger containers not for housing raw text
         String mainContent = "";
