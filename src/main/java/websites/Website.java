@@ -6,19 +6,17 @@ import org.jsoup.select.Elements;
 
 public abstract class Website {
     private final String name;
-    private String url1;
-    private String url2;
-    private String searchResultElement;
-    private ResultTypes resultType;
-    public Website(String name,String url1, String url2, String searchResultElement, ResultTypes r){
+    private final String url1;
+    private final String url2;
+    private final ResultTypes resultType;
+    public Website(String name,String url1, String url2, ResultTypes r){
         this.name = name;
         this.url1 = url1;
         this.url2 = url2;
-        this.searchResultElement = searchResultElement;
         this.resultType = r;
     }
-    public Website(String name,String url1, String url2, String searchResultElement){
-        this(name, url1, url2, searchResultElement, ResultTypes.TEXT);
+    public Website(String name,String url1, String url2){
+        this(name, url1, url2, ResultTypes.TEXT);
     }
     public String getName() {
         return name;
@@ -26,9 +24,7 @@ public abstract class Website {
     public String getSearchUrl(String keyword){
         return url1 + keyword + url2;
     }
-    protected String getSearchResultElement(){
-        return searchResultElement;
-    }
+
     public abstract Elements getSearchResultElements(Document resultPage);
     public abstract String getResultUrl(Element htmlElement);
     public abstract String findUsefulData(Document webpage);

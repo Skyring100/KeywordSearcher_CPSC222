@@ -6,13 +6,13 @@ import org.jsoup.select.Elements;
 
 public class YouTube extends Website{
     public YouTube() {
-        super("YouTube", "https://www.youtube.com/results?search_query=", "", "a#video-title", ResultTypes.VIDEO);
+        super("YouTube", "https://www.youtube.com/results?search_query=", "", ResultTypes.VIDEO);
     }
 
     @Override
     public Elements getSearchResultElements(Document resultPage) {
         Elements mainSection = resultPage.select("div#content");
-        return mainSection.next().next().select(getSearchResultElement());
+        return mainSection.next().next().select("a#video-title");
     }
 
     @Override

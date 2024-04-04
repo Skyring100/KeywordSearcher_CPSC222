@@ -6,7 +6,7 @@ import org.jsoup.select.Elements;
 
 public class Tenor extends Website{
     public Tenor() {
-        super("Tenor", "https://tenor.com/search/", "-gifs", "div.Gif", ResultTypes.IMAGE);
+        super("Tenor", "https://tenor.com/search/", "-gifs", ResultTypes.IMAGE);
     }
 
     @Override

@@ -6,12 +6,12 @@ import org.jsoup.select.Elements;
 
 public class UNBC extends Website{
     public UNBC() {
-        super("UNBC","https://www2.unbc.ca/search/","","li.search-result");
+        super("UNBC","https://www2.unbc.ca/search/","");
     }
 
     @Override
     public Elements getSearchResultElements(Document resultPage) {
-        return resultPage.select(getSearchResultElement());
+        return resultPage.select("li.search-result");
     }
 
     @Override

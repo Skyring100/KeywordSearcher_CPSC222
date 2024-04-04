@@ -6,13 +6,13 @@ import org.jsoup.select.Elements;
 
 public class WikiHow extends Website{
     public WikiHow(){
-        super("WikiHow","https://www.wikihow.com/wikiHowTo?search=", "&Search=", "a.result_link");
+        super("WikiHow","https://www.wikihow.com/wikiHowTo?search=", "&Search=");
     }
 
 
     @Override
     public Elements getSearchResultElements(Document resultPage) {
-        Elements rawResults = resultPage.select(getSearchResultElement());
+        Elements rawResults = resultPage.select("a.result_link");
         Elements cleansedResults = new Elements();
         //exclude "Category" results for Wikihow
         for(Element r : rawResults){
