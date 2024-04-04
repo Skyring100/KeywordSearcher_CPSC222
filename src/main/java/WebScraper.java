@@ -30,9 +30,11 @@ public class WebScraper extends Thread{
             System.out.println("Going to "+url);
             searchResultPage = Jsoup.connect(url).get();
         } catch (IOException e) {
-            System.out.println("Failed to reach "+url);
-            throw new RuntimeException(e);
+            System.out.println("Failed to reach "+url+"\n"+e.getMessage());
+            dataQueue.add(new MinedInfo(website.getName(), "N/A",""+maxResults, Website.ResultTypes.NO_RESULT));
+            return;
         }
+        debugFile(searchResultPage);
         //getting all elements that contain valuable search result links
         Elements resultElements = website.getSearchResultElements(searchResultPage);
         if(resultElements.isEmpty()){
@@ -72,9 +74,13 @@ public class WebScraper extends Thread{
             dataQueue.add(new MinedInfo(website.getName(), dataURL, usefulData, website.getResultType()));
         }
     }
-    private static void debugFile(Document page) throws IOException {
-        FileWriter writer = new FileWriter("debug"+page.title()+".html");
-        writer.write(page.html());
-        writer.close();
+    private static void debugFile(Document page) {
+        try {
+            FileWriter writer = new FileWriter("debug"+page.title()+".html");
+            writer.write(page.html());
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

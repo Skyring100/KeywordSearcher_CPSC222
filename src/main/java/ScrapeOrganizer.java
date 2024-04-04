@@ -64,7 +64,7 @@ public class ScrapeOrganizer extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                //System.out.println(d);
+                System.out.println(d);
                 if(d.getDataType().equals(Website.ResultTypes.NO_RESULT)){
                     int nullResponses = Integer.parseInt(d.getMainContent());
                     responsesRemaining -= nullResponses;
