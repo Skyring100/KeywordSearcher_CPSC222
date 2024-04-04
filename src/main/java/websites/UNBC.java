@@ -26,12 +26,12 @@ public class UNBC extends Website{
         Element article = webpage.select("article").first();
         //check if the article section is null
         if(article == null){
-            throw new RuntimeException("No article element for "+webpage.title());
+            return "No data found";
         }
         //UNBC lacks webpage structure, so guess which element is the main content based on text length
-        //main content generally is in p and span tags. It can also be in div tags, but these are broadly used as larger containers not for housing raw text
+        //main content generally is in p, div and span tags
         String mainContent = "";
-        Elements possibleMains = article.select("p,span");
+        Elements possibleMains = article.select("p,span, div");
         for(Element candidate : possibleMains){
             String text = removeHTMLTags(candidate.html());
             //main content should be long, but if it's too long that element is likely not correct

@@ -22,6 +22,11 @@ public class Tenor extends Website{
 
     @Override
     public String findUsefulData(Document webpage) {
-        return webpage.select("div.Gif").first().select("img").attr("src");
+        Element gifSection = webpage.select("div.Gif").first();
+        if(gifSection == null){
+            System.out.println("No gif section was found on page "+webpage.location());
+            return "DIV FAILURE";
+        }
+        return gifSection.select("img").attr("src");
     }
 }

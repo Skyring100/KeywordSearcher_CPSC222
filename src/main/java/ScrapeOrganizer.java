@@ -69,7 +69,6 @@ public class ScrapeOrganizer extends Thread{
                 }else {
                     responsesRemaining--;
                     //eventually write this as "fill in the blank" HTML code but for now just write the contents of the data
-                    System.out.println("\n" + d.getWebsiteName() + " says: \n" + d.getMainContent() + "\n\nFrom " + d.getUrl() + "\n");
                     String webHeader = "<th>"+d.getWebsiteName()+"</th>";
                     String mainContentSection = "<td>"+d.getDataType().injectData(d.getMainContent())+"</td>";
                     String urlFooter = "<td><a href=\""+d.getUrl()+"\">Source</a>";
@@ -80,8 +79,6 @@ public class ScrapeOrganizer extends Thread{
                 }
             }
         }
-        System.out.println("---DONE COLLECTING DATA---");
-        System.out.println(tableSection);
         //add all the data gathered into the webpage
         File customWebpage = new File("created_webpages/" + keyword + ".html");
         try {
@@ -92,6 +89,5 @@ public class ScrapeOrganizer extends Thread{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("DONE WRITING");
     }
 }
