@@ -36,9 +36,10 @@ public class WikiHow extends Website{
         String summary = removeHTMLTags(page.select("div.mf-section-0").html());
         data += summary+"\n\n";
         Elements steps = page.select("div.step");
+        int stepNumber = 1;
         for(Element s : steps){
             //from this "step", only get the bolded text for the step
-            data += removeHTMLTags(s.select("b.whb").html()).replaceAll("\n"," ")+"\n";
+            data += "|STEP "+stepNumber++ +"| "+removeHTMLTags(s.select("b.whb").html()).replaceAll("\n"," ")+"\n";
         }
         return data;
     }

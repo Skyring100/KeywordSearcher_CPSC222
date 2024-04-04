@@ -17,7 +17,7 @@ public class Tenor extends Website{
 
     @Override
     public String getResultUrl(Element htmlElement) {
-        return "https://tenor.com/"+htmlElement.attr("href");
+        return "https://tenor.com"+htmlElement.attr("href");
     }
 
     @Override

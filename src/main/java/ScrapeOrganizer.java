@@ -49,7 +49,7 @@ public class ScrapeOrganizer extends Thread{
         try {
             File basePlate = new File("html_baseplate/basePlate.html");
             Document baseDoc = Jsoup.parse(basePlate);
-            baseHTML = baseDoc.html().replace("\"mainTitle\">","\"mainTitle\">"+keyword);
+            baseHTML = baseDoc.html().replace("\"mainTitle\">","\"mainTitle\">"+keyword.toUpperCase());
         }catch (IOException e){
             throw new RuntimeException(e);
         }

@@ -1,10 +1,10 @@
 body {
-    backgound-color: Gray
+    background-color: #006969
 }
 #mainTitle{
 	background-color: #005454;
 	color: #C92E2A;
-	font-size: 25px;
+	font-size: 50px;
 	padding: 5px;
 	text-align: center;
 }
@@ -12,10 +12,14 @@ tr{
 
 }
 th{
-
+	font-size: 25px;
+	padding: 5px;
+	text-align: center;
 }
 td{
-
+	font-size: 20px;
+	padding: 5px;
+	text-align: center;
 }
 a{
 
