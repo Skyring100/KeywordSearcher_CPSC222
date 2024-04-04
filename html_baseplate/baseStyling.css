@@ -1,6 +1,22 @@
 body {
     backgound-color: Gray
 }
-.mainTitle{
+#mainTitle{
+	background-color: #005454;
+	color: #C92E2A;
+	font-size: 25px;
+	padding: 5px;
+	text-align: center;
+}
+tr{
+
+}
+th{
+
+}
+td{
+
+}
+a{
 
 }

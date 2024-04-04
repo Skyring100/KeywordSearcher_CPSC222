@@ -37,8 +37,7 @@ public class WebScraper extends Thread{
            dataQueue.add(MinedInfo.getNoDataValue());
             return;
         }
-
-        //get the links from those search result elements
+        //parse through a result elements and grab their links
         for (int i = 0; i < Math.min(maxResults, resultElements.size()); i++) {
             Element ele = resultElements.get(i);
             String resultLink = website.getResultUrl(ele);
@@ -46,6 +45,7 @@ public class WebScraper extends Thread{
             DataExtractor extractor = new DataExtractor(resultLink);
             extractor.start();
         }
+
     }
     private class DataExtractor extends Thread {
         private final String dataURL;
@@ -65,7 +65,7 @@ public class WebScraper extends Thread{
 
             System.out.println(dataURL+"\n"+usefulData);
 
-            dataQueue.add(new MinedInfo(website.getName(), dataURL, usefulData));
+            dataQueue.add(new MinedInfo(website.getName(), dataURL, usefulData, website.getResultType()));
         }
     }
 }

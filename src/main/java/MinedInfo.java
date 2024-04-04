@@ -5,10 +5,7 @@ public class MinedInfo {
     private final String url;
     private final String mainContent;
     private final Website.ResultTypes dataType;
-    private static final MinedInfo NO_DATA_VALUE = new MinedInfo("","","");
-    public MinedInfo(String websiteName, String url, String mainContent){
-        this(websiteName, url, mainContent, Website.ResultTypes.TEXT);
-    }
+    private static final MinedInfo NO_DATA_VALUE = new MinedInfo("","","", Website.ResultTypes.TEXT);
     public MinedInfo(String websiteName, String url, String mainContent, Website.ResultTypes dataType){
         this.websiteName = websiteName;
         this.url = url;

@@ -12,16 +12,16 @@ public class Tenor extends Website{
     @Override
     public Elements getSearchResultElements(Document resultPage) {
          Element gifSection = resultPage.select("div.GifList").first();
-         return gifSection.select("img");
+         return gifSection.select("a");
     }
 
     @Override
     public String getResultUrl(Element htmlElement) {
-        return htmlElement.select("img").first().attr("src");
+        return "https://tenor.com/"+htmlElement.attr("href");
     }
 
     @Override
     public String findUsefulData(Document webpage) {
-        return webpage.select("img").first().attr("src");
+        return webpage.select("div.Gif").first().select("img").attr("src");
     }
 }
