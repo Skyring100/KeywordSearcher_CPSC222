@@ -1,14 +1,11 @@
-import websites.Tenor;
-import websites.UNBC;
-import websites.Website;
-import websites.WikiHow;
+import websites.*;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         String keyword = getKeyword();
-        ScrapeOrganizer organizer = new ScrapeOrganizer(keyword, new Website[]{new WikiHow(), new UNBC(), new Tenor()}, 15);
+        ScrapeOrganizer organizer = new ScrapeOrganizer(keyword, new Website[]{new YouTube()}, 15);
         //NEXT SITES: youtube, https://www.pexels.com
         organizer.start();
     }

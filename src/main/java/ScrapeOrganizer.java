@@ -66,8 +66,9 @@ public class ScrapeOrganizer extends Thread{
                 }
                 //System.out.println(d);
                 if(d.getDataType().equals(Website.ResultTypes.NO_RESULT)){
-                    responsesRemaining -= Integer.parseInt(d.getMainContent());
-                    System.out.println("No result returned from "+d.getWebsiteName()+". Link: "+d.getUrl());
+                    int nullResponses = Integer.parseInt(d.getMainContent());
+                    responsesRemaining -= nullResponses;
+                    System.out.println("No result returned from "+d.getWebsiteName()+". Quantity: "+nullResponses);
                 }else {
                     responsesRemaining--;
                     //eventually write this as "fill in the blank" HTML code but for now just write the contents of the data

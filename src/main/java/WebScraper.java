@@ -3,6 +3,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import websites.Website;
+
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
@@ -69,5 +71,10 @@ public class WebScraper extends Thread{
 
             dataQueue.add(new MinedInfo(website.getName(), dataURL, usefulData, website.getResultType()));
         }
+    }
+    private static void debugFile(Document page) throws IOException {
+        FileWriter writer = new FileWriter("debug"+page.title()+".html");
+        writer.write(page.html());
+        writer.close();
     }
 }
