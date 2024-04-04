@@ -34,7 +34,7 @@ public class WebScraper extends Thread{
         //getting all elements that contain valuable search result links
         Elements resultElements = website.getSearchResultElements(searchResultPage);
         if(resultElements.isEmpty()){
-            System.out.println("No results found");
+           dataQueue.add(MinedInfo.getNoDataValue());
             return;
         }
 

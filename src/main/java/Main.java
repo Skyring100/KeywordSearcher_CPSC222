@@ -1,3 +1,4 @@
+import websites.Tenor;
 import websites.UNBC;
 import websites.Website;
 import websites.WikiHow;
@@ -7,7 +8,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         String keyword = getKeyword();
-        ScrapeOrganizer organizer = new ScrapeOrganizer(keyword, new Website[]{new WikiHow(), new UNBC()});
+        ScrapeOrganizer organizer = new ScrapeOrganizer(keyword, new Website[]{new WikiHow(), new UNBC(), new Tenor()});
         organizer.start();
     }
     private static String getKeyword(){

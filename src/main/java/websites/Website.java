@@ -9,11 +9,16 @@ public abstract class Website {
     private String url1;
     private String url2;
     private String searchResultElement;
-    public Website(String name,String url1, String url2, String searchResultElement){
+    private ResultTypes resultType;
+    public Website(String name,String url1, String url2, String searchResultElement, ResultTypes r){
         this.name = name;
         this.url1 = url1;
         this.url2 = url2;
         this.searchResultElement = searchResultElement;
+        this.resultType = r;
+    }
+    public Website(String name,String url1, String url2, String searchResultElement){
+        this(name, url1, url2, searchResultElement, ResultTypes.TEXT);
     }
     public String getName() {
         return name;
@@ -35,5 +40,20 @@ public abstract class Website {
      */
     public String removeHTMLTags(String html){
         return html.replaceAll("<.*?>","");
+    }
+
+    public ResultTypes getResultType() {
+        return resultType;
+    }
+
+    public enum ResultTypes{
+        TEXT("<p>?</p>"), IMAGE("<img src=\"?\">"), VIDEO("<iframe> width=\"420\" height=\"315\"src=\"?\"></iframe>");
+        private final String tag;
+        ResultTypes(String tag){
+            this.tag = tag;
+        }
+        public String injectData(String data){
+            return tag.replace("?",data);
+        }
     }
 }

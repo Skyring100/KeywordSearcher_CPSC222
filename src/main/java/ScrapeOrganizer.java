@@ -20,8 +20,10 @@ public class ScrapeOrganizer extends Thread{
     private final WebScraper[] scrapers;
     private final Element[] tableRows = new Element[3];
     private int responsesRemaining;
+    private final int maxResults;
     public ScrapeOrganizer(String keyword, Website[] websites, int maxResults){
         dataQueue = new LinkedBlockingQueue<>();
+        this.maxResults = maxResults;
         scrapers = new WebScraper[websites.length];
         for(int i = 0; i < websites.length; i++){
             scrapers[i] = new WebScraper(websites[i], keyword, dataQueue, maxResults);
@@ -57,13 +59,14 @@ public class ScrapeOrganizer extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                responsesRemaining--;
-
-
-                //eventually write this as "fill in the blank" HTML code but for now just write the contents of the data
-                System.out.println("\n"+d.getWebsiteName()+" says: \n"+d.getMainContent()+"\n\nFrom "+d.getUrl()+"\n");
-                addDataToPage(d);
-
+                if(d.equals(MinedInfo.getNoDataValue())){
+                    responsesRemaining -= maxResults;
+                }else {
+                    responsesRemaining--;
+                    //eventually write this as "fill in the blank" HTML code but for now just write the contents of the data
+                    System.out.println("\n" + d.getWebsiteName() + " says: \n" + d.getMainContent() + "\n\nFrom " + d.getUrl() + "\n");
+                    addDataToPage(d);
+                }
                 if(responsesRemaining == 0){
                     running = false;
                 }
@@ -73,7 +76,7 @@ public class ScrapeOrganizer extends Thread{
     }
     private void addDataToPage(MinedInfo d){
         tableRows[0].append("<th>"+d.getWebsiteName()+"</th>");
-        tableRows[1].append("<td>"+d.getMainContent()+"</td>");
+        tableRows[1].append("<td>"+d.getDataType().injectData(d.getMainContent())+"</td>");
         tableRows[2].append("<td>"+d.getUrl()+"</td>");
     }
 }
