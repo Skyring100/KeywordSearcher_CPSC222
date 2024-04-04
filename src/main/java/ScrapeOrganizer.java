@@ -64,8 +64,10 @@ public class ScrapeOrganizer extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                if(d.equals(MinedInfo.getNoDataValue())){
-                    responsesRemaining -= maxResults;
+                //System.out.println(d);
+                if(d.getDataType().equals(Website.ResultTypes.NO_RESULT)){
+                    responsesRemaining -= Integer.parseInt(d.getMainContent());
+                    System.out.println("No result returned from "+d.getWebsiteName()+". Link: "+d.getUrl());
                 }else {
                     responsesRemaining--;
                     //eventually write this as "fill in the blank" HTML code but for now just write the contents of the data
@@ -79,6 +81,7 @@ public class ScrapeOrganizer extends Thread{
                 }
             }
         }
+        System.out.println("Anything in queue? "+dataQueue.size());
         //add all the data gathered into the webpage
         File customWebpage = new File("created_webpages/" + keyword + ".html");
         try {

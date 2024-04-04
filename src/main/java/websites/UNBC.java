@@ -23,15 +23,17 @@ public class UNBC extends Website{
     public String findUsefulData(Document webpage) {
         String data = webpage.title()+"\n";
         //main "article" section on each webpage has the content of the webpage
-        Element article = webpage.select("article").first();
+        Element mainSection = webpage.select("article").first();
         //check if the article section is null
-        if(article == null){
-            return "No data found";
+        if(mainSection == null){
+            //if so, we will just search the entire page instead of a small section
+            System.out.println("No article found on UNBC page, general scrape");
+            mainSection = webpage.select("body").first();
         }
         //UNBC lacks webpage structure, so guess which element is the main content based on text length
         //main content generally is in p, div and span tags
         String mainContent = "";
-        Elements possibleMains = article.select("p,span, div");
+        Elements possibleMains = mainSection.select("p,span, div");
         for(Element candidate : possibleMains){
             String text = removeHTMLTags(candidate.html());
             //main content should be long, but if it's too long that element is likely not correct

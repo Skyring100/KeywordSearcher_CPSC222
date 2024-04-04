@@ -47,7 +47,7 @@ public abstract class Website {
     }
 
     public enum ResultTypes{
-        TEXT("<p>?</p>"), IMAGE("<img src=\"?\">"), VIDEO("<iframe> width=\"420\" height=\"315\"src=\"?\"></iframe>");
+        NO_RESULT("?"),TEXT("<p>?</p>"), IMAGE("<img src=\"?\">"), VIDEO("<iframe> width=\"420\" height=\"315\"src=\"?\"></iframe>");
         private final String tag;
         ResultTypes(String tag){
             this.tag = tag;

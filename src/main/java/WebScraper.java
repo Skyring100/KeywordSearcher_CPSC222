@@ -34,19 +34,20 @@ public class WebScraper extends Thread{
         //getting all elements that contain valuable search result links
         Elements resultElements = website.getSearchResultElements(searchResultPage);
         if(resultElements.isEmpty()){
-           dataQueue.add(MinedInfo.getNoDataValue());
+           dataQueue.add(new MinedInfo(website.getName(), "N/A",""+maxResults, Website.ResultTypes.NO_RESULT));
             return;
         }
         int noDataEntries = maxResults - resultElements.size();
         //parse through a result elements and grab their links
-        for (Element ele : resultElements) {
+        for (int i = 0; i < Math.min(maxResults, resultElements.size()); i++) {
+            Element ele = resultElements.get(i);
             String resultLink = website.getResultUrl(ele);
             //extract the data from the resulting url
             DataExtractor extractor = new DataExtractor(resultLink);
             extractor.start();
         }
-        for(int i = 1; i < noDataEntries; i++){
-            dataQueue.add(new MinedInfo(website.getName(), "N/A","no result", website.getResultType()));
+        if(noDataEntries > 0){
+            dataQueue.add(new MinedInfo(website.getName(), "N/A",""+noDataEntries, Website.ResultTypes.NO_RESULT));
         }
     }
     private class DataExtractor extends Thread {
@@ -56,7 +57,7 @@ public class WebScraper extends Thread{
         }
         @Override
         public void run() {
-            System.out.println(website.getName()+" "+dataURL);
+            //System.out.println(website.getName()+" "+dataURL);
             Document resultDocument;
             try {
                 resultDocument = Jsoup.connect(dataURL).get();
