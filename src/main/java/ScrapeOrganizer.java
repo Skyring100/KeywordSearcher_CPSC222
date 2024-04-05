@@ -44,12 +44,16 @@ public class ScrapeOrganizer extends Thread{
             scraper.start();
         }
         StringBuilder tableSection = new StringBuilder();
-        String baseHTML;
+        String[] baseHTML;
         //prepare a custom webpage by copying over a base, default webpage
         try {
             File basePlate = new File("html_baseplate/basePlate.html");
             Document baseDoc = Jsoup.parse(basePlate);
-            baseHTML = baseDoc.html().replace("\"mainTitle\">","\"mainTitle\">"+keyword.toUpperCase());
+            String rawHtml = baseDoc.html().replace("\"mainTitle\">","\"mainTitle\">"+keyword.toUpperCase());
+            //split the code into 2 parts, splitting at the table tags
+            int tableStart = rawHtml.indexOf("<table>");
+            int tableEnd = rawHtml.indexOf("</table>");
+            baseHTML = new String[]{rawHtml.substring(0, tableStart+7), rawHtml.substring(tableEnd)};
         }catch (IOException e){
             throw new RuntimeException(e);
         }
@@ -64,7 +68,6 @@ public class ScrapeOrganizer extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println(d);
                 if(d.getDataType().equals(Website.ResultTypes.NO_RESULT)){
                     int nullResponses = Integer.parseInt(d.getMainContent());
                     responsesRemaining -= nullResponses;
@@ -74,6 +77,7 @@ public class ScrapeOrganizer extends Thread{
                     //eventually write this as "fill in the blank" HTML code but for now just write the contents of the data
                     String webHeader = "<th>"+d.getWebsiteName()+"</th>";
                     String mainContentSection = "<td>"+d.getDataType().injectData(d.getMainContent())+"</td>";
+                    mainContentSection = mainContentSection.replaceAll("\n","<br>");
                     String urlFooter = "<td><a href=\""+d.getUrl()+"\">Source</a>";
                     tableSection.append("<tr>").append(webHeader).append(mainContentSection).append(urlFooter).append("</tr>");
                 }
@@ -82,13 +86,11 @@ public class ScrapeOrganizer extends Thread{
                 }
             }
         }
-        System.out.println("Anything in queue? "+dataQueue.size());
         //add all the data gathered into the webpage
         File customWebpage = new File("created_webpages/" + keyword + ".html");
         try {
             FileWriter writer = new FileWriter(customWebpage);
-
-            writer.write(baseHTML.replace("<table>","<table>\n"+ tableSection));
+            writer.write(baseHTML[0]+tableSection+baseHTML[1]);
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

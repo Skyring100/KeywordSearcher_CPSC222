@@ -11,17 +11,27 @@ public class Dictionary extends Website{
 
     @Override
     public Elements getSearchResultElements(Document resultPage) {
-        //does not have a search results page, so when searching we immediately land where content is
-        return null;
+        return resultPage.select("main[data-type=page]");
     }
 
     @Override
     public String getResultUrl(Element htmlElement) {
-        return null;
+        return htmlElement.ownerDocument().location();
     }
 
     @Override
     public String findUsefulData(Document webpage) {
-        return null;
+        StringBuilder data = new StringBuilder().append(webpage.title()+"\n");
+        //get all the definitions
+        Elements definitions = getSearchResultElements(webpage).select("div[data-type=word-definitions]");
+        int listCount = 0;
+        for(Element e : definitions){
+            String grammarType = e.select("span.luna-pos").text();
+            data.append(grammarType+"\n");
+            for(Element listItem : e.select("li")){
+                data.append(++listCount +". "+listItem.text()+"\n");
+            }
+        }
+        return data.toString();
     }
 }

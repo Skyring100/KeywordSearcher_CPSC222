@@ -30,7 +30,7 @@ public class WebScraper extends Thread{
             System.out.println("Going to "+url);
             searchResultPage = Jsoup.connect(url).get();
         } catch (IOException e) {
-            System.out.println("Failed to reach "+url+"\n"+e.getMessage());
+            System.out.println(e.getMessage());
             dataQueue.add(new MinedInfo(website.getName(), "N/A",""+maxResults, Website.ResultTypes.NO_RESULT));
             return;
         }
@@ -76,7 +76,7 @@ public class WebScraper extends Thread{
     }
     private static void debugFile(Document page) {
         try {
-            FileWriter writer = new FileWriter("debug"+page.title()+".html");
+            FileWriter writer = new FileWriter("debug.html");
             writer.write(page.html());
             writer.close();
         } catch (IOException e) {
