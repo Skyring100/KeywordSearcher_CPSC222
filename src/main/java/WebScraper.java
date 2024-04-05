@@ -22,6 +22,11 @@ public class WebScraper extends Thread{
     public WebScraper(Website w, String keyword, BlockingQueue<MinedInfo> d){
         this(w,keyword,d,5);
     }
+
+    public Website getWebsite() {
+        return website;
+    }
+
     @Override
     public void run() {
         //connect to the search result page

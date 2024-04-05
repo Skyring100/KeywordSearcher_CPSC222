@@ -50,6 +50,13 @@ public class ScrapeOrganizer extends Thread{
             File basePlate = new File("html_baseplate/basePlate.html");
             Document baseDoc = Jsoup.parse(basePlate);
             String rawHtml = baseDoc.html().replace("\"mainTitle\">","\"mainTitle\">"+keyword.toUpperCase());
+            //list out all the websites we are searching on
+            StringBuilder searchList = new StringBuilder();
+            for(WebScraper s : scrapers){
+                Website w = s.getWebsite();
+                searchList.append("<li><a href=\"").append(w.getSearchUrl(keyword)).append("\" target=\"_blank\">").append(w.getName()).append(" Search</a></li>");
+            }
+            rawHtml = rawHtml.replace("<ul>","<ul>\n"+searchList);
             //split the code into 2 parts, splitting at the table tags
             int tableStart = rawHtml.indexOf("<table>");
             int tableEnd = rawHtml.indexOf("</table>");

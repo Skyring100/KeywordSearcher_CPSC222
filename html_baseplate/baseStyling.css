@@ -26,9 +26,23 @@ td{
 	border: 3px #00FFFF;
 	border-style: ridge;
 }
-a{
-
-}
 p{
     text-align: left;
+}
+ul{
+    list-style-type:none;
+    margin: 0;
+    padding-left: 250px;
+    padding-right: 250px;
+}
+li{
+    text-align:center;
+    font-family: 'Trebuchet MS', sans-serif;
+    padding: 10px;
+    font-size: 30px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: #FF4500;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
