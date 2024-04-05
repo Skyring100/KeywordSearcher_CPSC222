@@ -27,11 +27,11 @@ public class UNBC extends Website{
         //check if the article section is null
         if(mainSection == null){
             //the timberwolves pages comes up a lot when searching, so have a special case for that
-            if(webpage.title().equals("\tUniversity of Northern British Columbia - Official Athletics Website")){
+            if(webpage.location().equals("https://unbctimberwolves.com/")){
                 return "This link went to the Timberwolves website for UNBC!";
             }
             //if not, we will just search the entire page instead of a small section
-            System.out.println("No article found on UNBC page, general scrape");
+            System.out.println("No article found on UNBC page, general scrape on "+webpage.location());
             mainSection = webpage.select("body").first();
         }
         //UNBC lacks webpage structure, so guess which element is the main content based on text length
