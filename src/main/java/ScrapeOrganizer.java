@@ -1,16 +1,11 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import websites.Website;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
-import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -54,7 +49,9 @@ public class ScrapeOrganizer extends Thread{
             StringBuilder searchList = new StringBuilder();
             for(WebScraper s : scrapers){
                 Website w = s.getWebsite();
-                searchList.append("<li><a href=\"").append(w.getSearchUrl(keyword)).append("\" target=\"_blank\">").append(w.getName()).append(" Search</a></li>");
+                String listTag = "<li style=\"background-color:#"+getWebsiteColour(w.getName())+"\">";
+                String aTag = "<a href=\""+w.getSearchUrl(keyword)+"\" target=\"_blank\">";
+                searchList.append(listTag).append(aTag).append(w.getName()).append(" Search</a></li>");
             }
             rawHtml = rawHtml.replace("<ul>","<ul>\n"+searchList);
             //split the code into 2 parts, splitting at the table tags
@@ -82,7 +79,7 @@ public class ScrapeOrganizer extends Thread{
                 }else {
                     responsesRemaining--;
                     //eventually write this as "fill in the blank" HTML code but for now just write the contents of the data
-                    String webHeader = "<th>"+d.getWebsiteName()+"</th>";
+                    String webHeader = "<th style=\"background-color:#"+getWebsiteColour(d.getWebsiteName())+"\";>"+d.getWebsiteName()+"</th>";
                     String mainContentSection = "<td>"+d.getDataType().injectData(d.getMainContent())+"</td>";
                     mainContentSection = mainContentSection.replaceAll("\n","<br>");
                     String urlFooter = "<td><a href=\""+d.getUrl()+"\" target=\"_blank\">Source</a>";
@@ -102,5 +99,15 @@ public class ScrapeOrganizer extends Thread{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     *A unique and robust way to get a hex color is to use some sort of object's hexadecimals representation.
+     * Note that this is completely arbitrary, just an interesting way to generate unique hex numbers per website
+     * @param w website name
+     * @return the corresponding color for that hex code
+     */
+    private String getWebsiteColour(String w){
+        return Integer.toHexString(w.hashCode()).substring(0,6).toUpperCase();
     }
 }
