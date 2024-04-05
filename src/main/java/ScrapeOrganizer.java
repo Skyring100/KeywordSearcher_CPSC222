@@ -78,7 +78,7 @@ public class ScrapeOrganizer extends Thread{
                     String webHeader = "<th>"+d.getWebsiteName()+"</th>";
                     String mainContentSection = "<td>"+d.getDataType().injectData(d.getMainContent())+"</td>";
                     mainContentSection = mainContentSection.replaceAll("\n","<br>");
-                    String urlFooter = "<td><a href=\""+d.getUrl()+"\">Source</a>";
+                    String urlFooter = "<td><a href=\""+d.getUrl()+"\" target=\"_blank\">Source</a>";
                     tableSection.append("<tr>").append(webHeader).append(mainContentSection).append(urlFooter).append("</tr>");
                 }
                 if(responsesRemaining == 0){

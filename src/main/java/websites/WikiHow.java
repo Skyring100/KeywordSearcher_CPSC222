@@ -33,13 +33,13 @@ public class WikiHow extends Website{
         //In Wikihow, each page has a brief summary along with the numbered list of what to do
         String data = page.title()+"\n";
         //get the summary paragraph section
-        String summary = removeHTMLTags(page.select("div.mf-section-0").html());
+        String summary = page.select("div.mf-section-0").text();
         data += summary+"\n\n";
         Elements steps = page.select("div.step");
         int stepNumber = 1;
         for(Element s : steps){
             //from this "step", only get the bolded text for the step
-            data += "|STEP "+stepNumber++ +"| "+removeHTMLTags(s.select("b.whb").html()).replaceAll("\n"," ")+"\n";
+            data += "|STEP "+stepNumber++ +"| "+s.select("b.whb").text().replaceAll("\n"," ")+"\n";
         }
         return data;
     }

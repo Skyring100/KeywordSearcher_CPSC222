@@ -34,9 +34,6 @@ public abstract class Website {
      * @param html the HTML code in String format
      * @return the text without any HTML code
      */
-    public String removeHTMLTags(String html){
-        return html.replaceAll("<.*?>","");
-    }
 
     public ResultTypes getResultType() {
         return resultType;

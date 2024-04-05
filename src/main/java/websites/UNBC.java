@@ -21,7 +21,7 @@ public class UNBC extends Website{
 
     @Override
     public String findUsefulData(Document webpage) {
-        String data = webpage.title()+"\n";
+        String data = webpage.title()+"\n\n";
         //main "article" section on each webpage has the content of the webpage
         Element mainSection = webpage.select("article").first();
         //check if the article section is null
@@ -37,11 +37,11 @@ public class UNBC extends Website{
         //UNBC lacks webpage structure, so guess which element is the main content based on text length
         //main content generally is in p, div and span tags
         String mainContent = "";
-        Elements possibleMains = mainSection.select("p,span, div");
+        Elements possibleMains = mainSection.select("p,span,div");
         for(Element candidate : possibleMains){
-            String text = removeHTMLTags(candidate.html());
+            String text = candidate.text();
             //main content should be long, but if it's too long that element is likely not correct
-            if(text.length() > mainContent.length() && text.length() < 700){
+            if(text.length() > mainContent.length() && text.length() < 1000){
                 mainContent = text;
             }
         }
