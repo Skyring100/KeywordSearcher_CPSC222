@@ -22,7 +22,7 @@ public abstract class Website {
         return name;
     }
     public String getSearchUrl(String keyword){
-        return url1 + keyword + url2;
+        return url1 + keyword.replaceAll(" ", "%20") + url2;
     }
 
     public abstract Elements getSearchResultElements(Document resultPage);

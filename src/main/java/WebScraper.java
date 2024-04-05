@@ -61,12 +61,13 @@ public class WebScraper extends Thread{
         }
         @Override
         public void run() {
-            //System.out.println(website.getName()+" "+dataURL);
             Document resultDocument;
             try {
                 resultDocument = Jsoup.connect(dataURL).get();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println(e.getMessage());
+                dataQueue.add(new MinedInfo(website.getName(), dataURL,""+1, Website.ResultTypes.NO_RESULT));
+                return;
             }
 
             String usefulData = website.findUsefulData(resultDocument);
