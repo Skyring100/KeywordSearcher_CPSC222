@@ -31,16 +31,25 @@ public class WikiHow extends Website{
     @Override
     public String findUsefulData(Document page) {
         //In Wikihow, each page has a brief summary along with the numbered list of what to do
-        String data = page.title()+"\n";
+        StringBuilder data = new StringBuilder();
+        data.append(page.title()).append("\n");
         //get the summary paragraph section
         String summary = page.select("div.mf-section-0").text();
-        data += summary+"\n\n";
+        data.append(summary).append("\n\n");
         Elements steps = page.select("div.step");
         int stepNumber = 1;
         for(Element s : steps){
             //from this "step", only get the bolded text for the step
-            data += "|STEP "+stepNumber++ +"| "+s.select("b.whb").text().replaceAll("\n"," ")+"\n";
+            data.append("|STEP ").append(stepNumber++).append("| ");
+            String text = s.select("b.whb").text();
+
+            //check for embedded symbols which do not work offsite
+            int invalidCharIndex = text.indexOf("{\"smallUrl\"");
+            if(invalidCharIndex != -1){
+                text = text.substring(0, invalidCharIndex);
+            }
+            data.append(text).append("\n");
         }
-        return data;
+        return data.toString();
     }
 }
