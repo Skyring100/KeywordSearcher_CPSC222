@@ -52,7 +52,7 @@ public class ScrapeOrganizer extends Thread{
                 //create a list of websites used in the search
                 String listTag = "<li style=\"background-color:#"+getWebsiteColour(w.getName())+"\">";
                 String aTag = "<a href=\""+w.getSearchUrl(keyword)+"\" target=\"_blank\">";
-                searchList.append(listTag).append(aTag).append(w.getName()).append(" Search</a></li>");
+                searchList.append(listTag).append(aTag).append(w.getName()).append(" Search</a>     ").append(w.getName()).append("??? out of ").append(maxResults).append("</li>");
             }
             rawHtml = rawHtml.replace("<ul>","<ul>\n"+searchList);
             //split the code into 2 parts, splitting at the table tags. This makes for easy insertion of search results later
@@ -78,6 +78,8 @@ public class ScrapeOrganizer extends Thread{
                     int nullResponses = Integer.parseInt(d.getMainContent());
                     responsesRemaining -= nullResponses;
                     System.out.println("No result returned from "+d.getWebsiteName()+". Quantity: "+nullResponses);
+                    //update how many responses we got out of the maximum
+                    baseHTML[0] = baseHTML[0].replace(d.getWebsiteName()+"???",""+(maxResults-nullResponses));
                 }else {
                     responsesRemaining--;
                     //formulate a new data entry row into the table
@@ -92,6 +94,12 @@ public class ScrapeOrganizer extends Thread{
                 }
             }
         }
+        //if a website did not give any null responses, then all responses came through
+        for(WebScraper scr : scrapers){
+            Website w = scr.getWebsite();
+            baseHTML[0] = baseHTML[0].replace(w.getName()+"???",""+maxResults);
+        }
+
         //add all the data gathered into the webpage
         File customWebpage = new File("created_webpages/" + keyword + ".html");
         try {

@@ -15,7 +15,7 @@ public class Main {
         return reader.nextLine().strip();
     }
     private static int getResultCount(Scanner reader){
-        System.out.println("How many results would you like per website? ");
+        System.out.print("How many results would you like per website? ");
         return reader.nextInt();
     }
 }
