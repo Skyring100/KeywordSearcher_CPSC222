@@ -3,7 +3,9 @@ package websites;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
+/**
+ * An implementation to make UNBC's website to work with the webscrapers
+ */
 public class UNBC extends Website{
     public UNBC() {
         super("UNBC","https://www2.unbc.ca/search/","");

@@ -4,6 +4,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+/**
+ * An implementation to make Dictionary.com to work with the webscrapers
+ */
 public class Dictionary extends Website{
     public Dictionary() {
         super("Dictionary", "https://www.dictionary.com/browse/", "");
@@ -25,9 +28,12 @@ public class Dictionary extends Website{
         //get all the definitions
         Elements definitions = getSearchResultElements(webpage).select("div[data-type=word-definitions]");
         int listCount = 0;
+        //loop through each definition, having a list number per definition
         for(Element e : definitions){
+            //get the header grammar type, such as whether it is a noun, verb etc.
             String grammarType = e.select("span.luna-pos").text();
             data.append(grammarType+"\n");
+            //for every definition under this grammar type, list the definitions
             for(Element listItem : e.select("li")){
                 data.append(++listCount +". "+listItem.text()+"\n");
             }

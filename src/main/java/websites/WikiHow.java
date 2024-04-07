@@ -3,7 +3,9 @@ package websites;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
+/**
+ * An implementation to make WikiHow to work with the webscrapers
+ */
 public class WikiHow extends Website{
     public WikiHow(){
         super("WikiHow","https://www.wikihow.com/wikiHowTo?search=", "&Search=");
@@ -14,7 +16,7 @@ public class WikiHow extends Website{
     public Elements getSearchResultElements(Document resultPage) {
         Elements rawResults = resultPage.select("a.result_link");
         Elements cleansedResults = new Elements();
-        //exclude "Category" results for Wikihow
+        //exclude "Category" results for Wikihow. This does not contain any directly useful data, so ignore it
         for(Element r : rawResults){
             if(!getResultUrl(r).contains("https://www.wikihow.com/Category:")){
                 cleansedResults.add(r);
@@ -43,7 +45,7 @@ public class WikiHow extends Website{
             data.append("|STEP ").append(stepNumber++).append("| ");
             String text = s.select("b.whb").text();
 
-            //check for embedded symbols which do not work offsite
+            //check for embedded symbols. These do not function as intended when not on the WikiHow website, so remove them
             int invalidCharIndex = text.indexOf("{\"smallUrl\"");
             if(invalidCharIndex != -1){
                 text = text.substring(0, invalidCharIndex);
