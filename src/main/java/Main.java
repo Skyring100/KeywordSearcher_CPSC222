@@ -12,7 +12,13 @@ public class Main {
     }
     private static String getKeyword(Scanner reader){
         System.out.print("Enter a word to get data on: ");
-        return reader.nextLine().strip();
+        String rawLine = reader.nextLine().strip();
+        //remove all potentially problematic characters for file saving
+        char[] badSymbols = {'/','\\','*','?',':','>','<','|','\"'};
+        for(char sym : badSymbols){
+            rawLine = rawLine.replace(sym,' ');
+        }
+        return rawLine;
     }
     private static int getResultCount(Scanner reader){
         System.out.print("How many results would you like per website? ");
