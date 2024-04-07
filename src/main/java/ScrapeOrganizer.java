@@ -49,12 +49,13 @@ public class ScrapeOrganizer extends Thread{
             StringBuilder searchList = new StringBuilder();
             for(WebScraper s : scrapers){
                 Website w = s.getWebsite();
+                //create a list of websites used in the search
                 String listTag = "<li style=\"background-color:#"+getWebsiteColour(w.getName())+"\">";
                 String aTag = "<a href=\""+w.getSearchUrl(keyword)+"\" target=\"_blank\">";
                 searchList.append(listTag).append(aTag).append(w.getName()).append(" Search</a></li>");
             }
             rawHtml = rawHtml.replace("<ul>","<ul>\n"+searchList);
-            //split the code into 2 parts, splitting at the table tags
+            //split the code into 2 parts, splitting at the table tags. This makes for easy insertion of search results later
             int tableStart = rawHtml.indexOf("<table>");
             int tableEnd = rawHtml.indexOf("</table>");
             baseHTML = new String[]{rawHtml.substring(0, tableStart+7), rawHtml.substring(tableEnd)};
@@ -73,12 +74,13 @@ public class ScrapeOrganizer extends Thread{
                     throw new RuntimeException(e);
                 }
                 if(d.getDataType().equals(Website.ResultTypes.NO_RESULT)){
+                    //if a webscraper gave no result, subtract the amount of null responses from what we are expecting
                     int nullResponses = Integer.parseInt(d.getMainContent());
                     responsesRemaining -= nullResponses;
                     System.out.println("No result returned from "+d.getWebsiteName()+". Quantity: "+nullResponses);
                 }else {
                     responsesRemaining--;
-                    //eventually write this as "fill in the blank" HTML code but for now just write the contents of the data
+                    //formulate a new data entry row into the table
                     String webHeader = "<th style=\"background-color:#"+getWebsiteColour(d.getWebsiteName())+"\";>"+d.getWebsiteName()+"</th>";
                     String mainContentSection = "<td>"+d.getDataType().injectData(d.getMainContent())+"</td>";
                     mainContentSection = mainContentSection.replaceAll("\n","<br>");
@@ -99,10 +101,11 @@ public class ScrapeOrganizer extends Thread{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("A webpage has been created about \""+keyword+"\" at "+customWebpage.getAbsolutePath());
     }
 
     /**
-     *A unique and robust way to get a hex color is to use some sort of object's hexadecimals representation.
+     *A unique and robust way to get a hex color is to use some sort of object's hash code
      * Note that this is completely arbitrary, just an interesting way to generate unique hex numbers per website
      * @param w website name
      * @return the corresponding color for that hex code

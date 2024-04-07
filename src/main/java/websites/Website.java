@@ -4,6 +4,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+/**
+ * A general structure to implement websites to work with the webscrapers
+ */
 public abstract class Website {
     private final String name;
     private final String url1;
@@ -29,16 +32,13 @@ public abstract class Website {
     public abstract String getResultUrl(Element htmlElement);
     public abstract String findUsefulData(Document webpage);
 
-    /**
-     * Removes all HTML tags from given HTML code, leaving only the text directly on the website
-     * @param html the HTML code in String format
-     * @return the text without any HTML code
-     */
-
     public ResultTypes getResultType() {
         return resultType;
     }
 
+    /**
+     * Used to specify what kind of data the webscraper is extracting from it. Specifies how the data is represented on the website
+     */
     public enum ResultTypes{
         NO_RESULT("?"),TEXT("<p>?</p>"), IMAGE("<img src=\"?\">"), VIDEO("<iframe> width=\"420\" height=\"315\"src=\"?\"></iframe>");
         private final String tag;

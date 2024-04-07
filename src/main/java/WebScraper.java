@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * Goes to a specified, preconfigured website, searches a keyword, and grabs all the "useful data" per search result
+ */
 public class WebScraper extends Thread{
     private final String url;
     private final Website website;
@@ -40,25 +43,31 @@ public class WebScraper extends Thread{
             return;
         }
         debugFile(searchResultPage);
-        //getting all elements that contain valuable search result links
+        //getting all elements on the search results page that contain search result links
         Elements resultElements = website.getSearchResultElements(searchResultPage);
         if(resultElements.isEmpty()){
+            //there were no results for this search
            dataQueue.add(new MinedInfo(website.getName(), "N/A",""+maxResults, Website.ResultTypes.NO_RESULT));
             return;
         }
         int noDataEntries = maxResults - resultElements.size();
-        //parse through a result elements and grab their links
+        //parse through all the result elements and grab their links
         for (int i = 0; i < Math.min(maxResults, resultElements.size()); i++) {
             Element ele = resultElements.get(i);
             String resultLink = website.getResultUrl(ele);
-            //extract the data from the resulting url
+            //create a new thread to extract the data from the resulting url
             DataExtractor extractor = new DataExtractor(resultLink);
             extractor.start();
         }
         if(noDataEntries > 0){
+            //if there were fewer results returned than the desired max results, inform the organizer as such
             dataQueue.add(new MinedInfo(website.getName(), "N/A",""+noDataEntries, Website.ResultTypes.NO_RESULT));
         }
     }
+
+    /**
+     * Given a search result link, this will grab the "useful data" from the webpage
+     */
     private class DataExtractor extends Thread {
         private final String dataURL;
         DataExtractor(String url){
@@ -66,6 +75,7 @@ public class WebScraper extends Thread{
         }
         @Override
         public void run() {
+            //connect to the webpage
             Document resultDocument;
             try {
                 resultDocument = Jsoup.connect(dataURL).get();
@@ -74,12 +84,16 @@ public class WebScraper extends Thread{
                 dataQueue.add(new MinedInfo(website.getName(), dataURL,""+1, Website.ResultTypes.NO_RESULT));
                 return;
             }
-
+            //extract the "useful data" as defined by the website object, which was passed in on webscraper's creation
             String usefulData = website.findUsefulData(resultDocument);
-
             dataQueue.add(new MinedInfo(website.getName(), dataURL, usefulData, website.getResultType()));
         }
     }
+
+    /**
+     * Creates a local version of containing the html of a specified webpage
+     * @param page the webpage to download the html of
+     */
     private static void debugFile(Document page) {
         try {
             FileWriter writer = new FileWriter("debug.html");

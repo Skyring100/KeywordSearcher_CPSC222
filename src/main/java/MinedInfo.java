@@ -1,5 +1,8 @@
 import websites.Website;
 
+/**
+ * A data record that is sent by webscrapers to the organizer
+ */
 public class MinedInfo {
     private final String websiteName;
     private final String url;
