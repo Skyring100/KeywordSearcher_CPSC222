@@ -59,6 +59,9 @@ public class ScrapeOrganizer extends Thread{
             int tableStart = rawHtml.indexOf("<table>");
             int tableEnd = rawHtml.indexOf("</table>");
             baseHTML = new String[]{rawHtml.substring(0, tableStart+7), rawHtml.substring(tableEnd)};
+
+            //make sure the "created_webpages" directory exists
+            new File("created_webpages").mkdir();
         }catch (IOException e){
             throw new RuntimeException(e);
         }
