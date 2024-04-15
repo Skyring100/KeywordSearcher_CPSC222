@@ -2,6 +2,10 @@ import websites.*;
 
 import java.util.Scanner;
 
+/**
+ * The driver program for the web-scraping to begin
+ * Please note for this project to work, it requires a library called Jsoup, which I included in pom.xml as per Maven dependencies
+ */
 public class Main {
     public static void main(String[] args) {
         Scanner inputReader = new Scanner(System.in);
