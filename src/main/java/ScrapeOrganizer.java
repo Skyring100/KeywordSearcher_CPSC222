@@ -107,7 +107,7 @@ public class ScrapeOrganizer extends Thread{
             writer.write(baseHTML[0]+tableSection+baseHTML[1]);
             writer.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to create webpage\n"+e);
         }
         System.out.println("A webpage has been created about \""+keyword+"\" at "+customWebpage.getAbsolutePath());
     }

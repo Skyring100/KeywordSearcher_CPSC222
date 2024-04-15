@@ -100,7 +100,7 @@ public class WebScraper extends Thread{
             writer.write(page.html());
             writer.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Failed to create Debug File "+e);
         }
     }
 }
