@@ -26,7 +26,7 @@ public class Dictionary extends Website{
     public String findUsefulData(Document webpage) {
         StringBuilder data = new StringBuilder().append(webpage.title()+"\n");
         //get all the definitions
-        Elements definitions = getSearchResultElements(webpage).select("div[data-type=word-definitions]");
+        Elements definitions = getSearchResultElements(webpage).select("ol[data-type=definition-content-list]");
         int listCount = 0;
         //loop through each definition, having a list number per definition
         for(Element e : definitions){

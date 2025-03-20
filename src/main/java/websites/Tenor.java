@@ -13,7 +13,7 @@ public class Tenor extends Website{
 
     @Override
     public Elements getSearchResultElements(Document resultPage) {
-         Element gifSection = resultPage.select("div.GifList").first();
+         Element gifSection = resultPage.select("div.UniversalGifList").first();
          return gifSection.select("a");
     }
 

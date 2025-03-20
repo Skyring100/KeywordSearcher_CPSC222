@@ -8,12 +8,12 @@ import org.jsoup.select.Elements;
  */
 public class UNBC extends Website{
     public UNBC() {
-        super("UNBC","https://www2.unbc.ca/search/","");
+        super("UNBC","https://www.unbc.ca/search?site_keyword=","");
     }
 
     @Override
     public Elements getSearchResultElements(Document resultPage) {
-        return resultPage.select("li.search-result");
+        return resultPage.select("div.views-row");
     }
 
     @Override
